@@ -1,0 +1,27 @@
+body {
+	background-color: rgb(65,69,78);
+	color: white;
+}
+
+.header {
+	font-size: 25pt;
+	text-align: left;
+}
+
+#moods {
+	margin: 2.5%;
+	width: 65%;
+	height: 10%; 
+}
+
+#name {
+	margin: 2.5%;
+	font-size: 40pt;
+}
+
+#thoughts {
+	float: right;
+	margin: 2.5%;
+	height: 10%; 
+	width: 20%;
+}
