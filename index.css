@@ -8,6 +8,11 @@ body {
 	text-align: left;
 }
 
+#chart_div {
+	width: 20%;
+	height: 10%;
+}
+
 #moods {
 	margin: 2.5%;
 	width: 65%;
