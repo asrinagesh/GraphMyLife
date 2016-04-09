@@ -1,58 +1,54 @@
 window.onload = function() {
-  console.log("test");
   init();
-  google.charts.load('current', {'packages':['corechart']});
-  google.charts.setOnLoadCallback(drawBackgroundColor);
 }
 
 var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1BezZYURXfBGn9rKb1ueZf_dkbWkqfq7Mk16V7ibdeRU/pubhtml?gid=0&single=true';
+var spreadsheet_data;
 
 function init() {
   Tabletop.init( { key: public_spreadsheet_url,
                    callback: showInfo,
-                   simpleSheet: true,
-                   debug: true } )
+                   simpleSheet: true
+                 } )
 }
 
 function showInfo(data, tabletop) {
-  alert("Successfully processed!")
-  console.log(SON.parse(data));
+  spreadsheet_data = data;
+  console.log(data.length);
+  google.charts.load('current', {packages: ['corechart', 'line']});
+  google.charts.setOnLoadCallback(drawBackgroundColor);
 }
 
 function drawBackgroundColor() {
       var data = new google.visualization.DataTable();
-      var jsonData = JSON.parse(this.responseText);
-      console.log(jsonData);
-
-
-      data.addColumn('number', 'X');
-      data.addColumn('number', 'Dogs');
-
-      data.addRows([
-        [0, 0],   [1, 10],  [2, 23],  [3, 17],  [4, 18],  [5, 9],
-        [6, 11],  [7, 27],  [8, 33],  [9, 40],  [10, 32], [11, 35],
-        [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
-        [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
-        [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
-        [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
-        [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
-        [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70],
-        [48, 72], [49, 68], [50, 66], [51, 65], [52, 67], [53, 70],
-        [54, 71], [55, 72], [56, 73], [57, 75], [58, 70], [59, 68],
-        [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
-        [66, 70], [67, 72], [68, 75], [69, 80]
-      ]);
+      data.addColumn('number', 'Date');
+      data.addColumn('number', 'Happiness');
+      data.addColumn('number', 'Sadness');
+      data.addColumn('number', 'Anxiety');
+      data.addColumn('number', 'Irritability');
+      //data.addColumn('number', 'Sadness');
+      console.log(spreadsheet_data + "tets");
+      for(var i=0; i<spreadsheet_data.length; i++) {
+        data.addRows([
+          [i+1,  parseInt(spreadsheet_data[i]['Happiness']),
+           parseInt(spreadsheet_data[i]['Sadness']), parseInt(spreadsheet_data[i]['Anxiety']), 
+           parseInt(spreadsheet_data[i]['Irritability'])]
+        ]);
+        console.log(spreadsheet_data[i]['Date'] + spreadsheet_data[i]['Happiness'] + 
+                    spreadsheet_data[i]['Sadness'] + spreadsheet_data[i]['Anxiety'] + 
+                    spreadsheet_data[i]['Irritability']);
+      }
 
       var options = {
-        hAxis: {
-          title: 'Time'
+        chart: {
+          title: 'Box Office Earnings in First Two Weeks of Opening',
+          subtitle: 'in millions of dollars (USD)'
         },
-        vAxis: {
-          title: 'Popularity'
-        },
-        backgroundColor: '#f1f8e9'
+        width: 1500,
+        height: 700,  
+        backgroundColor: '#41454E'
       };
 
       var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
       chart.draw(data, options);
-}
+    }
